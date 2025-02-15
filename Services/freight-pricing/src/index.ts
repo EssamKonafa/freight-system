@@ -1,9 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import freightRouter from "./routes/price"
+import freightRouter from "./routes/freight"
 import RouteModel from './models/route';
 import PricingModel from './models/pricing';
 import ContainerTypeModel from './models/containerType';
+
 const app = express();
 
 const PORT = process.env.PORT || 4001;
@@ -39,7 +40,7 @@ mongoose
             ]);
         } 
     })
-    .then(() => console.log("connected to database"))
+    .then(() => console.log("connected to freight-pricing database"))
     .catch((err: Error) => {
         console.error("Error connecting to the database", err);
         process.exit(1); //to exist if unable to connecting to database

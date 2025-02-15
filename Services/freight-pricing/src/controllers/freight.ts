@@ -3,12 +3,12 @@ import RouteModel from '../models/route';
 import PricingModel from '../models/pricing';
 import ContainerTypeModel from '../models/containerType';
 
-//ضيف فانكشن تشيك ان لو الايميل لو متسجل قبل كده او لا
 async function shippingPrice(req: Request, res: Response) {
     const { loadingPort, dischargePort, containerType } = req.body;
-    if (!loadingPort) { res.status(400).json({ message: "loadingPort are required" }); return; };
-    if (!dischargePort) { res.status(400).json({ message: "dischargePort are required" }); return; };
-    if (!containerType) { res.status(400).json({ message: "containerType are required" }); return; };
+    
+    if (!loadingPort) { res.status(400).json({ message: "loadingPort is required" }); return; };
+    if (!dischargePort) { res.status(400).json({ message: "dischargePort is required" }); return; };
+    if (!containerType) { res.status(400).json({ message: "containerType is required" }); return; };
     try {
         const [route, pricing, containerTypePrice] = await Promise.all([
             RouteModel.findOne({ from: loadingPort, to: dischargePort }),

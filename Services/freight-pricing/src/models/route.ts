@@ -7,9 +7,9 @@ interface IRoute {
 };
 
 const routeSchema = new Schema<IRoute>({
-    from: { type: String, required: true },
-    to: { type: String, required: true },
-    distance_km: { type: Number, required: true },
+    from: { type: String },
+    to: { type: String},
+    distance_km: { type: Number,},
 });
 
 const RouteModel = model<IRoute>("Route", routeSchema);
