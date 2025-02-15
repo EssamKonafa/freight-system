@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import ShipmentBookingModel from "../models/booking";
 
 async function createShipmentBooking(req: Request, res: Response) {
-    const { loadingPort, dischargePort, containerType, shipmentPrice } = req.body;
-    if (!loadingPort || !dischargePort || !containerType || !shipmentPrice) { res.status(404).json({ message: "missing required fields" }); return; };
+    const { userId, loadingPort, dischargePort, containerType } = req.body;
+    if (!userId || !loadingPort || !dischargePort || !containerType) { res.status(404).json({ message: "missing required fields" }); return; };
     try {
         const newShipmentBooking = new ShipmentBookingModel({
+            userId,
             loadingPort,
             dischargePort,
             containerType,
-            shipmentPrice
         });
         await newShipmentBooking.save();
         res.status(201).json({ message: "shipment booking created successfully", newShipmentBooking });
@@ -33,4 +33,19 @@ async function getAllShipmentBookings(req: Request, res: Response) {
     };
 };
 
-export default { createShipmentBooking, getAllShipmentBookings };
+async function getUserBookings(req: Request, res: Response) {
+    const { userId } = req.params;
+    if (!userId) { res.status(400).json({ message: "User ID is required" }); return;}
+    try {
+        const userBookings = await ShipmentBookingModel.find({ userId });
+        if (userBookings.length === 0) { res.status(404).json({ message: "No bookings found for this user" }); return;}
+        res.status(200).json({ message: "User bookings retrieved successfully", userBookings });
+        return;
+    } catch (error) {
+        console.error("Error fetching user bookings:", error);
+        res.status(500).json({ message: "Internal server error" });
+        return;
+    }
+};
+
+export default { createShipmentBooking, getAllShipmentBookings, getUserBookings };

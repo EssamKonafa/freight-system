@@ -13,7 +13,7 @@ app.listen(PORT, () => {
 //connecting to database
 mongoose
     .connect(process.env.DATABASE_LINK || 'mongodb://localhost:27017/shipment-booking')
-    .then(() => console.log("connected to database"))
+    .then(() => console.log("connected to shipment-booking database"))
     .catch((err: Error) => {
         console.error("Error connecting to the database", err);
         process.exit(1); //to exist if unable to connecting to database
