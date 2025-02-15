@@ -11,11 +11,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "amqplib": "^0.10.5",
     "express": "^4.21.2",
     "mongoose": "^8.10.1",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.6",
     "@types/express": "^5.0.0"
   }
 }

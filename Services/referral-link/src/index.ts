@@ -1,18 +1,21 @@
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import referralLinkRouter from "./routes/referral-link";
+import { subscribeEvent } from "./RABBITMQ/events/subscribeEvent";
+import { UserRegisteredHandler } from "./RABBITMQ/handlers/UserRegisteredHandler";
+import { startDiscountHandler } from "./RABBITMQ/handlers/discountHandler";
 const app = express();
 
 const PORT = process.env.PORT || 4003;
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
-});
+}); 
 
 //connecting to database
 mongoose
     .connect(process.env.DATABASE_LINK || 'mongodb://localhost:27017/referral-link')
-    .then(() => console.log("connected to database"))
+    .then(() => console.log("connected to referral-link database"))
     .catch((err: Error) => {
         console.error("Error connecting to the database", err);
         process.exit(1); //to exist if unable to connecting to database
@@ -20,6 +23,7 @@ mongoose
 
 //middlewares
 app.use(express.json());
+subscribeEvent("newUser.registered", UserRegisteredHandler); 
 
 //routes
 app.use("/referral-link", referralLinkRouter);
