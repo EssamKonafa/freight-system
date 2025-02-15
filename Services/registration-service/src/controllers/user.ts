@@ -2,14 +2,18 @@ import { sendEmail } from "../config/sendEmail";
 import UserModel from "../models/user";
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { publishEvent } from "../RABBITMQ/events/publishEvent";
+
 
 async function userRegister(req: Request, res: Response) {
-    const { email } = req.body;
-    if (!email) {
-        res.status(404).json({ message: "email not found" });
-        return;
-    }
+
+    const { email, referralCode } = req.body;
+    if (!email) { res.status(404).json({ message: "email not found" }); return; };
+
     try {
+        const existingUser = await UserModel.exists({ email });
+        if (existingUser) { res.status(409).json({ message: "email already exists" }); return; };
+
         const OTPCode = Math.floor(100000 + Math.random() * 900000);
         const OTPExpiresAt = new Date(Date.now() + 500 * 600 * 1000);
 
@@ -17,18 +21,24 @@ async function userRegister(req: Request, res: Response) {
             htmlContent: `<p> Your verification code is <strong>${OTPCode}</strong>. Use this code to activate your account."<p/>`,
             receiverEmail: email,
         });
-        const newUser = new UserModel({ email, OTPCode });
-        newUser.OTPExpiresAt = OTPExpiresAt;
-        await newUser.save();
 
+        const newUser = new UserModel({ email, OTPCode, OTPExpiresAt });
+        
+        // if (referralCode) {
+        //     await publishEvent("newUser.registered", { referralCode });
+        // }
+
+        await newUser.save();
         res.status(201).json({ message: `OTP code sended successfully to: ${email}` });
         return;
+
     } catch (error) {
         console.error("error while creating user", error);
         res.status(500).json({ message: "error while sending OTP code" });
         return;
     }
 };
+
 
 async function userActivation(req: Request, res: Response) {
     const { OTPCode } = req.body;
@@ -54,6 +64,7 @@ async function userActivation(req: Request, res: Response) {
         newUser.isActivated = true;
         newUser.OTPCode = null;
         newUser.OTPExpiresAt = null;
+
         await newUser.save();
         res.status(201).json({ message: "user Activated successfully", newUser });
         return;
@@ -79,4 +90,4 @@ async function getUser(req: Request, res: Response) {
     };
 };
 
-export default { userRegister, userActivation, getUser }
+export default { userRegister, userActivation, getUser };

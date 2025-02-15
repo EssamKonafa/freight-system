@@ -12,8 +12,8 @@ app.listen(PORT, () => {
 
 //connecting to database
 mongoose
-    .connect(process.env.DATABASE_LINK || 'mongodb://localhost:27017/freightSystem')
-    .then(() => console.log("connected to database"))
+    .connect(process.env.DATABASE_LINK || 'mongodb://localhost:27017/registration-service')
+    .then(() => console.log("connected to registration-service database"))
     .catch((err: Error) => {
         console.error("Error connecting to the database", err);
         process.exit(1); //to exist if unable to connecting to database
@@ -22,26 +22,19 @@ mongoose
 //middlewares
 app.use(express.json());
 
-    //routes
+//routes
 app.use('/user', userRouter);
 
 //not found middleware
-app.use("*", (req:Request, res:Response, next:NextFunction) => {
+app.use("*", (req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({ message: " route not found " });
 });
 
 //handling middleware error
 app.use(
-    (
-        err: Error,
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
+    (err: Error, req: express.Request, res: express.Response, next: express.NextFunction
     ) => {
-        console.error(err.stack);
-        res
-            .status(500)
-            .json({ message: "there is something went wrong with your API" });
+        console.error(err.stack); 
+        res.status(500).json({ message: "there is something went wrong with your API" });
     }
 );
-

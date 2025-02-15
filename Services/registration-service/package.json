@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/amqplib": "^0.10.6",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.1",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "@getbrevo/brevo": "^2.2.0",
+    "amqplib": "^0.10.5",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "mongoose": "^8.10.0",
