@@ -1,5 +1,4 @@
 import ReferralLinkModel from "../../models/referral-link";
-import { subscribeEvent } from "../events/subscribeEvent";
 
 export async function updateReferralCode(data: any) {
     console.log("event subscribed to newUser.registered:", data);
@@ -16,5 +15,3 @@ export async function updateReferralCode(data: any) {
         throw error;
     }
 }
-
-subscribeEvent("newUser.registered", updateReferralCode);

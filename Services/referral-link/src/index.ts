@@ -4,6 +4,7 @@ import referralLinkRouter from "./routes/referral-link";
 import { subscribeEvent } from "./RABBITMQ/events/subscribeEvent";
 import { updateReferralCode } from "./RABBITMQ/handlers/updateReferralCode";
 import { startDiscountHandler } from "./RABBITMQ/handlers/discountHandler";
+import { applyDiscountHandler } from "./RABBITMQ/handlers/applyDiscountHandler";
 const app = express();
 
 const PORT = process.env.PORT || 4003;
@@ -24,6 +25,7 @@ mongoose
 //middlewares
 app.use(express.json());
 subscribeEvent("newUser.registered", updateReferralCode); 
+subscribeEvent("user.discount", applyDiscountHandler); 
 
 //routes
 app.use("/referral-link", referralLinkRouter);
