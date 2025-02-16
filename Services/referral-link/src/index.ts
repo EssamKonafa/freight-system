@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import referralLinkRouter from "./routes/referral-link";
 import { subscribeEvent } from "./RABBITMQ/events/subscribeEvent";
-import { updateReferralCode } from "./RABBITMQ/handlers/UserRegisteredHandler";
+import { updateReferralCode } from "./RABBITMQ/handlers/updateReferralCode";
 import { startDiscountHandler } from "./RABBITMQ/handlers/discountHandler";
 const app = express();
 

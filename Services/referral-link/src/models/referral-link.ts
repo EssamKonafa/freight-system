@@ -10,7 +10,7 @@ interface IReferralLink {
 const referralLinkSchema = new Schema<IReferralLink>({
     code: { type: String, required: true },
     referrerUserId: { type: Schema.Types.ObjectId, ref: "User" },
-    referredUserId: { type: Schema.Types.ObjectId, ref: "User" },
+    referredUserId: { type: Schema.Types.ObjectId, ref: "User" , default:null},
     pointsEarned:{type: Number}
 },{ timestamps: true } 
 );
