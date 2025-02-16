@@ -6,7 +6,7 @@ export const sendEmail = async ({htmlContent,receiverEmail,receiverName}:any) =>
 
     let apiKey = apiInstance.authentications['apiKey'];
 
-    apiKey.apiKey = process.env.BREVO_API_KEY||"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";
+    apiKey.apiKey = process.env.BREVO_API_KEY;
     
     let sendSmtpEmail = new brevo.SendSmtpEmail();
     sendSmtpEmail.subject = 'Freight System';
