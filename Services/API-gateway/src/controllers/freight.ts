@@ -5,13 +5,11 @@ const FREIGHT_SERVICE = process.env.FREIGHT_SERVICE || "http://localhost:4001/fr
 
 async function shippingPrice(req: Request, res: Response) {
 
-    const { loadingPort, dischargePort, containerType } = req.body;
-    if (!loadingPort) { res.status(400).json({ message: "loadingPort are required" }); return };
-    if (!dischargePort) { res.status(400).json({ message: "dischargePort are required" }); return };
-    if (!containerType) { res.status(400).json({ message: "containerType are required" }); return };
+    const { userId,loadingPort, dischargePort, containerType } = req.body;
 
     try {
         const response = await axios.post(`${FREIGHT_SERVICE}/shipping-price`, {
+            userId,
             loadingPort,
             dischargePort,
             containerType

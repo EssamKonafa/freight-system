@@ -5,7 +5,6 @@ const BOOKING_SERVICE = process.env.BOOKING_SERVICE_URL||'http://localhost:4002/
 
 async function createBooking(req: Request, res: Response) {
     const { userId, loadingPort, dischargePort, containerType } = req.body;
-    if (!userId || !loadingPort || !dischargePort || !containerType ) { res.status(400).json({ message: "missing required fields" }); return };
     try {
         const response = await axios.post(`${BOOKING_SERVICE}`, {
             userId,
