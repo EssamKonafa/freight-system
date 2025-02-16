@@ -2,14 +2,18 @@ import { Request, Response } from 'express';
 import RouteModel from '../models/route';
 import PricingModel from '../models/pricing';
 import ContainerTypeModel from '../models/containerType';
+import { publishEvent } from '../RABBITMQ/events/publishEvent';
 
 async function shippingPrice(req: Request, res: Response) {
-    const { loadingPort, dischargePort, containerType } = req.body;
+    const { userId, loadingPort, dischargePort, containerType } = req.body;
     
+    if (!userId) { res.status(400).json({ message: "userId is required" }); return; };
     if (!loadingPort) { res.status(400).json({ message: "loadingPort is required" }); return; };
     if (!dischargePort) { res.status(400).json({ message: "dischargePort is required" }); return; };
     if (!containerType) { res.status(400).json({ message: "containerType is required" }); return; };
     try {
+
+
         const [route, pricing, containerTypePrice] = await Promise.all([
             RouteModel.findOne({ from: loadingPort, to: dischargePort }),
             PricingModel.findOne(),
