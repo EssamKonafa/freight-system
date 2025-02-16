@@ -21,7 +21,6 @@ async function generateReferralLink(req: Request, res: Response) {
     };
 };
 
-// hey gpt look at this code i think it's wanna be moved from here to the user controller
 // async function applyReferralCode(req: Request, res: Response) {
 
 //     const { referredUserId, referralCode } = req.body;

@@ -24,9 +24,9 @@ async function userRegister(req: Request, res: Response) {
 
         const newUser = new UserModel({ email, OTPCode, OTPExpiresAt });
         
-        // if (referralCode) {
-        //     await publishEvent("newUser.registered", { referralCode });
-        // }
+        if (referralCode) {
+            await publishEvent("newUser.registered", { referralCode });
+        }
 
         await newUser.save();
         res.status(201).json({ message: `OTP code sended successfully to: ${email}` });

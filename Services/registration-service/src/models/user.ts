@@ -6,8 +6,6 @@ interface IUser {
     OTPCode: number|null;
     OTPExpiresAt: Date|null;
     isActivated: boolean;
-    isReferrer: boolean;
-    pointsEarned: number;
 };
 
 const userSchema = new Schema<IUser>({
@@ -15,8 +13,6 @@ const userSchema = new Schema<IUser>({
     OTPCode: { type: Number, default: null },
     OTPExpiresAt: { type: Date, default:null },
     isActivated: { type: Boolean, default: false },
-    isReferrer: { type: Boolean, default:false },
-    pointsEarned: { type: Number, default: 0 },
 },{ timestamps: true } );
 
 // userSchema.pre<IUser>('save', async function (next) {

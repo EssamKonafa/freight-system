@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import referralLinkRouter from "./routes/referral-link";
 import { subscribeEvent } from "./RABBITMQ/events/subscribeEvent";
-import { UserRegisteredHandler } from "./RABBITMQ/handlers/UserRegisteredHandler";
+import { updateReferralCode } from "./RABBITMQ/handlers/UserRegisteredHandler";
 import { startDiscountHandler } from "./RABBITMQ/handlers/discountHandler";
 const app = express();
 
@@ -23,7 +23,7 @@ mongoose
 
 //middlewares
 app.use(express.json());
-subscribeEvent("newUser.registered", UserRegisteredHandler); 
+subscribeEvent("newUser.registered", updateReferralCode); 
 
 //routes
 app.use("/referral-link", referralLinkRouter);
