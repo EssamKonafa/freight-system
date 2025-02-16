@@ -25,7 +25,7 @@ async function userRegister(req: Request, res: Response) {
         const newUser = new UserModel({ email, OTPCode, OTPExpiresAt });
         
         if (referralCode) {
-            await publishEvent("newUser.registered", { referralCode });
+            await publishEvent("newUser.registered", { userId:newUser._id, referralCode });
         }
 
         await newUser.save();
