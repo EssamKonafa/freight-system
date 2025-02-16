@@ -4,6 +4,7 @@ import freightRouter from "./routes/freight"
 import RouteModel from './models/route';
 import PricingModel from './models/pricing';
 import ContainerTypeModel from './models/containerType';
+import { startConsumer } from './RABBITMQ/handlers/consumer';
 
 const app = express();
 
@@ -48,7 +49,7 @@ mongoose
 
 //middlewares
 app.use(express.json());
-
+startConsumer()
 //routes
 app.use('/freight', freightRouter);
 

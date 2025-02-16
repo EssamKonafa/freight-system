@@ -25,18 +25,25 @@ async function shippingPrice(req: Request, res: Response) {
 
         const shippingPrice = ((pricing.base_price_per_km + pricing.fuel_charge_per_km) * route.distance_km + containerTypePrice.price);
 
+        new RouteModel({
+            from: route.from,
+            to: route.to,
+            distance_km: route.distance_km,
+            totalPrice: shippingPrice});
+            await route.save()
         res.status(200).json({
             message: "Shipping price calculated successfully.",
             route: {
                 from: route.from,
                 to: route.to,
-                distance_km: route.distance_km
+                distance_km: route.distance_km,
+                totalPrice: shippingPrice,
+                isDiscounted:route.isDiscounted
             },
             container: {
                 type: containerTypePrice.type,
                 price: containerTypePrice.price,
             },
-            totalPrice: shippingPrice
         });
         return;
     } catch (error) {
